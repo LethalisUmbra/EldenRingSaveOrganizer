@@ -11,8 +11,10 @@ namespace EldenRingSaveOrganizer
         // public string mainSavePath = "C:\\Users\\aniba\\AppData\\Roaming\\EldenRing\\76561198237522048\\ER0000.sl2";
         public string mainSaveName = "ER0000.sl2";
 
+        public string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+
         // Se define la ruta a los archivos del juego
-        public string path = "C:\\Users\\aniba\\AppData\\Roaming\\EldenRing\\76561198237522048\\";
+        public string path;
 
         // Se declara un listado para almacenar los perfiles encontrados dentro de la ruta.
         public static List<string> profiles = new List<string>();
@@ -34,14 +36,40 @@ namespace EldenRingSaveOrganizer
         {
             // Se inicializan los componentes y se llama a la carga de listas
             InitializeComponent();
-            // Se cargan los perfiles de la ruta por defecto
-            loadProfiles();
 
-            // Se desactivan por defecto los botones al no tener un perfil seleccionado
-            btnImport.IsEnabled = false;
-            btnLoad.IsEnabled = false;
-            btnReplace.IsEnabled = false;
-            btnDelete.IsEnabled = false;
+            // Para almacenar la ruta del archivo se crea un .txt con la ruta y se verifica al inicio si existe o no
+            if (File.Exists("path.txt"))
+            {
+                // De existir se carga la ruta y se le asigna a la variable local
+                path = File.ReadAllText("path.txt");
+                // Se cargan los perfiles de la ruta por defecto
+                loadProfiles();
+
+                // Se desactivan por defecto los botones al no tener un perfil seleccionado
+                btnImport.IsEnabled = false;
+                btnLoad.IsEnabled = false;
+                btnReplace.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+            }
+            else
+            {
+                /* En el caso de no existir el archivo, se crea y se le asigna por defecto la ruta del roaming de EldenRing,
+                 * Alertando al usuario para que modifique la ruta a la que corresponde en la sección de 'Editar Perfiles' */
+                using (StreamWriter w = File.CreateText("path.txt"))
+                {
+                    w.Write(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EldenRing\\");
+                }
+
+                // Se carga la nueva ruta
+                path = File.ReadAllText("path.txt");
+
+                MessageBox.Show("You must select your savepath in 'Edit Profiles'", "Alert");
+
+            }
+
+            
+
+            
         }
 
         public void reloadProfiles()
@@ -110,6 +138,7 @@ namespace EldenRingSaveOrganizer
             string[] fileEntries = Directory.GetFiles(targetDirectory);
             foreach (string fullFilePath in fileEntries)
             {
+                Console.WriteLine("Full file Path: " + fullFilePath);
                 // Se extrae solamente el nombre del archivo
                 string filename = Path.GetFileName(fullFilePath);
                 // Se extrae la ruta del archivo sin su nombre

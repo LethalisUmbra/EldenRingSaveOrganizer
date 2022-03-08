@@ -47,7 +47,7 @@ namespace EldenRingSaveOrganizer
         // Dialogo para escoger el directorio donde se almacenarán los saves.
         private void Browse_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new FolderBrowserDialog())
+            using (var dialog = new OpenFileDialog())
             {
                 DialogResult result = dialog.ShowDialog();
                 // Al seleccionar otra carpeta se cambiará el path de ubicación y se cargarán los perfiles.
@@ -56,15 +56,27 @@ namespace EldenRingSaveOrganizer
                     string oldPath = mw.path;
                     try
                     {
-                        mw.path = dialog.SelectedPath;
+                        // Se remueve el nombre del archivo para solamente conservar la ruta de la carpeta contenedora.
+                        string filepath = dialog.FileName.Substring(0, dialog.FileName.LastIndexOf('\\'));
+                        // Se sobreescribe el archivo 'path.txt' con la nueva ruta definida.
+                        using (StreamWriter w = File.CreateText("path.txt"))
+                        {
+                            w.Write(filepath);
+                        }
+                        // Se sobreescribe la variable de path en MainWindow con la nueva ruta.
+                        mw.path = filepath;
+                        // Se cargan los perfiles de la ruta asignada.
                         mw.loadProfiles();
                         LoadProfileList();
                     }
                     catch
                     {
+                        // De no poder tener permisos o tener problemas con la ruta, se conservará la ruta anterior.
                         mw.path = oldPath;
                         System.Windows.MessageBox.Show("Por favor seleccione otra carpeta", "Error de directorio");
                     }
+                    
+                    // Se muestra la ruta en el TextBox.
                     txFilepath.Text = mw.path;
                 }
             }
