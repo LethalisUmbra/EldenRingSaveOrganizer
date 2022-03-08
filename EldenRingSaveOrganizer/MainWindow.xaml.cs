@@ -138,7 +138,6 @@ namespace EldenRingSaveOrganizer
             string[] fileEntries = Directory.GetFiles(targetDirectory);
             foreach (string fullFilePath in fileEntries)
             {
-                Console.WriteLine("Full file Path: " + fullFilePath);
                 // Se extrae solamente el nombre del archivo
                 string filename = Path.GetFileName(fullFilePath);
                 // Se extrae la ruta del archivo sin su nombre
@@ -212,7 +211,7 @@ namespace EldenRingSaveOrganizer
         // Al cargar archivo buscará el archivo seleccionado y reemplazará el principal.
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
-            File.Copy(path + selectedProfile + "\\" + selectedSave, path + mainSaveName, true);
+            File.Copy(path + "\\" + selectedProfile + "\\" + selectedSave, path + "\\" + mainSaveName, true);
             reloadProfiles();
         }
 
@@ -221,7 +220,7 @@ namespace EldenRingSaveOrganizer
         {
             if (MessageBox.Show("Are you sure?", "Replace Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                File.Copy(path + mainSaveName, path + selectedProfile + "\\" + selectedSave, true);
+                File.Copy(path + "\\" + mainSaveName, path + "\\" + selectedProfile + "\\" + selectedSave, true);
                 reloadProfiles();
             }
         }
@@ -231,7 +230,7 @@ namespace EldenRingSaveOrganizer
         {
             if (MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                File.Delete(path + selectedProfile + "\\" + selectedSave);
+                File.Delete(path + "\\" + selectedProfile + "\\" + selectedSave);
                 reloadProfiles();
             }
         }

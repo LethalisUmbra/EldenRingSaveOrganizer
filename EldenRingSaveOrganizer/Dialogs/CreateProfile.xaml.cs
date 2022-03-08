@@ -25,7 +25,7 @@ namespace EldenRingSaveOrganizer.Dialogs
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            Directory.CreateDirectory(pc.txFilepath.Text + txProfileName.Text);
+            Directory.CreateDirectory(pc.txFilepath.Text + "\\" + txProfileName.Text);
             Close();
         }
 

@@ -38,7 +38,7 @@ namespace EldenRingSaveOrganizer.Dialogs
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            File.Copy(mw.path + mw.mainSaveName, mw.path + mw.selectedProfile + "\\" + txSaveName.Text);
+            File.Copy(mw.path + "\\" + mw.mainSaveName, mw.path + "\\" + mw.selectedProfile + "\\" + txSaveName.Text);
             Close();
         }
 

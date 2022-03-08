@@ -107,7 +107,7 @@ namespace EldenRingSaveOrganizer
         {
             if (System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Directory.Delete(txFilepath.Text + selectedProfile, true);
+                Directory.Delete(txFilepath.Text + "//" + selectedProfile, true);
                 mw.loadProfiles();
                 LoadProfileList();
             }
