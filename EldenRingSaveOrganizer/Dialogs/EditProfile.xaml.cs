@@ -6,9 +6,6 @@ using System.Windows.Controls;
 
 namespace EldenRingSaveOrganizer.Dialogs
 {
-    /// <summary>
-    /// Lógica de interacción para EditProfile.xaml
-    /// </summary>
     public partial class EditProfile : Window
     {
         // Se declara una variable local para manejar la ventana de configuración de perfiles.
@@ -28,12 +25,14 @@ namespace EldenRingSaveOrganizer.Dialogs
             txProfileName.Focus();
         }
 
+        // Función para renombrar el perfil seleccionado
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             Directory.Move(pc.txFilepath.Text + "\\" + pc.selectedProfile, pc.txFilepath.Text + "\\" + txProfileName.Text);
             Close();
         }
 
+        // Al cambiar el texto se verifica que este sea alfanumérico y difiera del nombre original.
         private void txProfileName_TextChanged(object sender, TextChangedEventArgs e)
         {
             btnEdit.IsEnabled = IsAlphanumerical(txProfileName.Text) && txProfileName.Text != pc.selectedProfile;
@@ -47,14 +46,16 @@ namespace EldenRingSaveOrganizer.Dialogs
             pc.Visibility = Visibility.Visible;
         }
 
+        // Al cancelar se cerrará el dialogo.
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        // Función para verificar que un texto sea alfanumérico mediante Regex.
         public bool IsAlphanumerical(string text)
         {
-            if (text.Length > 0) return new Regex(@"^[a-zA-Z0-9\s]*$").IsMatch(text); else return false;
+            if (text.Length > 0) return new Regex(@"^[a-zA-Z0-9ñÑ\-_\s]*$").IsMatch(text); else return false;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -82,11 +81,15 @@ namespace EldenRingSaveOrganizer
             }
         }
 
+        // Se abre dialogo para ingresar el nombre del nuevo perfil
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
             new Dialogs.CreateProfile(this).Show();
         }
 
+        /* Al cambiar la selección de perfil se activan los botones de Editar y Eliminar, además de almacenar
+         * el perfil seleccionado en la variable correspondiente, también en el caso de cambiar la selección
+         * y no quedar ningun perfil seleccionado, los botones se volverán a desactivar y la variable toma el valor de nulo */
         private void profileList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (profileList.SelectedIndex >= 0)
@@ -103,6 +106,8 @@ namespace EldenRingSaveOrganizer
             }
         }
 
+        /* Al pulsar Delete se abrirá un mensaje consultando si está seguro de eliminar el perfil, de confirmar se eliminará el perfil
+         * y los archivos dentro del mismo, además de recargar el listado de perfiles para desplegarlos correctamente */
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
@@ -113,6 +118,7 @@ namespace EldenRingSaveOrganizer
             }
         }
 
+        // Al pulsar Edit se abrirá un dialogo donde se ingresa el nuevo nombre deseado.
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             new Dialogs.EditProfile(this).Show();

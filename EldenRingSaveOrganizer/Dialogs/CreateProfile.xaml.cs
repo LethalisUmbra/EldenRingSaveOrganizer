@@ -23,12 +23,14 @@ namespace EldenRingSaveOrganizer.Dialogs
             txProfileName.Focus();
         }
 
+        // Función para crear el perfil/directorio.
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             Directory.CreateDirectory(pc.txFilepath.Text + "\\" + txProfileName.Text);
             Close();
         }
 
+        // Al cambiar el texto se verifica que sea alfanumérico para activar el botón de crear.
         private void txProfileName_TextChanged(object sender, TextChangedEventArgs e)
         {
             btnCreate.IsEnabled = IsAlphanumerical(txProfileName.Text);
@@ -42,14 +44,16 @@ namespace EldenRingSaveOrganizer.Dialogs
             pc.Visibility = Visibility.Visible;
         }
 
+        // Al cancelar se cerrará la ventana de dialogo.
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        // Función para validar que el texto sea alfanumérico mediante un Regex.
         public bool IsAlphanumerical(string text)
         {
-            if (text.Length > 0) return new Regex(@"^[a-zA-Z0-9\s]*$").IsMatch(text); else return false;
+            if (text.Length > 0) return new Regex(@"^[a-zA-Z0-9ñÑ\-_\s]*$").IsMatch(text); else return false;
         }
     }
 }

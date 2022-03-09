@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:EldenRingSaveOrganizer"
         mc:Ignorable="d"
         Title="Elden Ring Save Organizer"
-        MinWidth="350" MinHeight="200"
+        MinWidth="455" MinHeight="200"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         WindowStyle="ThreeDBorderWindow"
-        Height="350" Width="450">
+        Height="350" Width="455">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
@@ -28,7 +28,8 @@
             <Button x:Name="btnImport" Content="⬇️ Import" HorizontalAlignment="Left" Margin="10,10,0,10" Width="75" Click="btnImport_Click"/>
             <Button x:Name="btnLoad" Content="⬆️ Load" HorizontalAlignment="Left" Margin="95,10,0,10" Width="75" Click="btnLoad_Click"/>
             <Button x:Name="btnReplace" Content="🔁 Replace" HorizontalAlignment="Left" Margin="180,10,0,10" Width="75" Height="25" Click="btnReplace_Click"/>
-            <Button x:Name="btnDelete" Content="🗑 Delete" HorizontalAlignment="Left" Margin="265,10,0,10" Width="75" Height="25" Click="btnDelete_Click"/>
+            <Button x:Name="btnRename" Content="✎ Rename" HorizontalAlignment="Left" Margin="265,10,0,10" Width="75" Height="25" Click="btnRename_Click"/>
+            <Button x:Name="btnDelete" Content="🗑 Delete" HorizontalAlignment="Left" Margin="350,10,0,10" Width="75" Height="25" Click="btnDelete_Click"/>
         </Grid>
 
         <ListBox x:Name="saveList" Grid.Row="1" Margin="10px" SelectionChanged="saveList_SelectionChanged"/>

@@ -50,6 +50,7 @@ namespace EldenRingSaveOrganizer
                 btnLoad.IsEnabled = false;
                 btnReplace.IsEnabled = false;
                 btnDelete.IsEnabled = false;
+                btnRename.IsEnabled = false;
             }
             else
             {
@@ -66,10 +67,6 @@ namespace EldenRingSaveOrganizer
                 MessageBox.Show("You must select your savepath in 'Edit Profiles'", "Alert");
 
             }
-
-            
-
-            
         }
 
         public void reloadProfiles()
@@ -198,6 +195,7 @@ namespace EldenRingSaveOrganizer
                 btnLoad.IsEnabled = true;
                 btnReplace.IsEnabled = true;
                 btnDelete.IsEnabled = true;
+                btnRename.IsEnabled = true;
                 selectedSave = saveList.SelectedItem.ToString();
             }
             else
@@ -205,6 +203,7 @@ namespace EldenRingSaveOrganizer
                 btnLoad.IsEnabled = false;
                 btnReplace.IsEnabled = false;
                 btnDelete.IsEnabled = false;
+                btnRename.IsEnabled = false;
             }
         }
 
@@ -233,6 +232,12 @@ namespace EldenRingSaveOrganizer
                 File.Delete(path + "\\" + selectedProfile + "\\" + selectedSave);
                 reloadProfiles();
             }
+        }
+
+        // Se abre dialogo para renombrar el perfil.
+        private void btnRename_Click(object sender, RoutedEventArgs e)
+        {
+            new Dialogs.EditSave(this).Show();
         }
     }
 }
