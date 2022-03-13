@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace EldenRingSaveOrganizer
@@ -8,7 +9,6 @@ namespace EldenRingSaveOrganizer
     public partial class MainWindow : Window
     {
         // Se define la ruta al save original
-        // public string mainSavePath = "C:\\Users\\aniba\\AppData\\Roaming\\EldenRing\\76561198237522048\\ER0000.sl2";
         public string mainSaveName = "ER0000.sl2";
 
         public string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
@@ -38,12 +38,17 @@ namespace EldenRingSaveOrganizer
             InitializeComponent();
 
             // Para almacenar la ruta del archivo se crea un .txt con la ruta y se verifica al inicio si existe o no
-            if (File.Exists("path.txt"))
+            if (File.Exists("settings.erso"))
             {
                 // De existir se carga la ruta y se le asigna a la variable local
-                path = File.ReadAllText("path.txt");
+                path = File.ReadLines("settings.erso").Take(1).First();
+                
                 // Se cargan los perfiles de la ruta por defecto
                 loadProfiles();
+
+                selectedProfile = File.ReadLines("settings.erso").Skip(1).Take(1).First();
+
+                profileList.SelectedItem = selectedProfile;
 
                 // Se desactivan por defecto los botones al no tener un perfil seleccionado
                 btnImport.IsEnabled = false;
@@ -56,15 +61,21 @@ namespace EldenRingSaveOrganizer
             {
                 /* En el caso de no existir el archivo, se crea y se le asigna por defecto la ruta del roaming de EldenRing,
                  * Alertando al usuario para que modifique la ruta a la que corresponde en la sección de 'Editar Perfiles' */
-                using (StreamWriter w = File.CreateText("path.txt"))
-                {
-                    w.Write(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EldenRing\\");
-                }
+                DirectoryInfo dirinfo = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EldenRing\\");
 
                 // Se carga la nueva ruta
-                path = File.ReadAllText("path.txt");
+                foreach (var dir in dirinfo.GetDirectories())
+                {
+                    path = dir.FullName;
+                }
 
-                MessageBox.Show("You must select your savepath in 'Edit Profiles'", "Alert");
+                using (StreamWriter w = File.CreateText("settings.erso"))
+                {
+                    w.WriteLine(path);
+                    w.WriteLine(selectedProfile);
+                }
+
+                MessageBox.Show("Check your savepath in 'Edit Profiles' section.", "Alert");
 
             }
         }
@@ -179,6 +190,8 @@ namespace EldenRingSaveOrganizer
             {
                 btnImport.IsEnabled = false;
             }
+
+            settingsChanger(selectedProfile, 2);
         }
 
         // Al pulsar import abrirá un dialogo donde se solicita un nombre para el archivo
@@ -212,6 +225,7 @@ namespace EldenRingSaveOrganizer
         {
             File.Copy(path + "\\" + selectedProfile + "\\" + selectedSave, path + "\\" + mainSaveName, true);
             reloadProfiles();
+            saveList.SelectedItem = selectedSave;
         }
 
         // Al reemplazar archivo buscará el original y lo reemplazará por el seleccionado.
@@ -238,6 +252,13 @@ namespace EldenRingSaveOrganizer
         private void btnRename_Click(object sender, RoutedEventArgs e)
         {
             new Dialogs.EditSave(this).Show();
+        }
+
+        public static void settingsChanger(string text, int line)
+        {
+            string[] settingsFile = File.ReadAllLines("settings.erso");
+            settingsFile[line - 1] = text;
+            File.WriteAllLines("settings.erso", settingsFile);
         }
     }
 }
