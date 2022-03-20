@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace EldenRingSaveOrganizer
 {
@@ -51,7 +52,6 @@ namespace EldenRingSaveOrganizer
                 profileList.SelectedItem = selectedProfile;
 
                 // Se desactivan por defecto los botones al no tener un perfil seleccionado
-                btnImport.IsEnabled = false;
                 btnLoad.IsEnabled = false;
                 btnReplace.IsEnabled = false;
                 btnDelete.IsEnabled = false;
@@ -78,6 +78,8 @@ namespace EldenRingSaveOrganizer
                 MessageBox.Show("Check your savepath in 'Edit Profiles' section.", "Alert");
 
             }
+
+            btnImport.IsEnabled = profileList.SelectedIndex >= 0;
         }
 
         public void reloadProfiles()
@@ -259,6 +261,26 @@ namespace EldenRingSaveOrganizer
             string[] settingsFile = File.ReadAllLines("settings.erso");
             settingsFile[line - 1] = text;
             File.WriteAllLines("settings.erso", settingsFile);
+        }
+
+        private void saveList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (saveList.SelectedIndex >= 0)
+            {
+                switch (e.Key)
+                {
+                    case Key.Delete:
+                        btnDelete_Click(sender, e);
+                        break;
+                    case Key.F2:
+                        btnRename_Click(sender, e);
+                        break;
+                    case Key.F4:
+                        btnLoad_Click(sender, e);
+                        break;
+                    default: break;
+                }
+            }
         }
     }
 }
